@@ -1,20 +1,25 @@
-
-syntax enable
+set expandtab
+set number
 set tabstop=4
 set softtabstop=4
-set expandtab
-set cursorline
+set autoindent
+set clipboard=unnamedplus
+set shiftwidth=4
+syntax enable
+colorscheme monokai
 filetype plugin indent on
-set wildmenu
-set incsearch
-set hlsearch
-set cindent
-colo peachpuff
-" allows cursor change in tmux mode
-if exists('$TMUX')
-    let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
-    let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
-else
-    let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-    let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+set mouse=a
+
+if has("autocmd")
+  au Filetype cpp setlocal tabstop=2 shiftwidth=2 expandtab
+  au VimEnter,InsertLeave * silent execute '!echo -ne "\e[2 q"' | redraw!
+  au InsertEnter,InsertChange *
+    \ if v:insertmode == 'i' | 
+    \   silent execute '!echo -ne "\e[6 q"' | redraw! |
+    \ elseif v:insertmode == 'r' |
+    \   silent execute '!echo -ne "\e[4 q"' | redraw! |
+    \ endif
+  au VimLeave * silent execute '!echo -ne "\e[ q"' | redraw!
 endif
+
+highlight Comment cterm=italic gui=italic
